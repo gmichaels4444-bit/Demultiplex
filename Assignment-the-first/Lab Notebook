@@ -14,7 +14,12 @@ R1 and R4 are sequences, R2 and R3 are barcodes that are mostly reverse complemn
 
 wc -l: 1452986940; divide by 4 to get 363246735 individual reads
   All files are the same length
-
+ 1ii. 
+ zcat 1294_S1_L008_R1_001.fastq.gz | head -2 | tail -1 | wc
+  101 (102 counting newline)
+ zcat 1294_S1_L008_R2_001.fastq.gz | head -2 | tail -1 | wc
+  8 (9 counting newlines)
+  phred +33 
 
 
 Demultiplexing:
