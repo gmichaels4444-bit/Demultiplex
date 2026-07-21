@@ -1,4 +1,14 @@
 20250721
+Part 1:
+Headed each file
+R1 and R4 are sequences, R2 and R3 are barcodes that are mostly reverse complemnented
+
+
+
+wc -l: 1452986940; divide by 4 to get 363246735 individual reads
+  All files are the same length
+
+
 
 Demultiplexing:
 Each header from each file matches, but indices are not found in the full length reads.
@@ -7,3 +17,6 @@ Each header from each file matches, but indices are not found in the full length
   Will need to reverse match internal 6 positions of each index to determine index matchiong
     Write a reverse complement function for this
 Will need to 
+
+
+  
