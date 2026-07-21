@@ -1,0 +1,9 @@
+20250721
+
+Demultiplexing:
+Each header from each file matches, but indices are not found in the full length reads.
+  Indices with the same header in R2 and R3 are generally reverse compliments
+  All or almost all indices have an "N" at the first position
+  Will need to reverse match internal 6 positions of each index to determine index matchiong
+    Write a reverse complement function for this
+Will need to 
