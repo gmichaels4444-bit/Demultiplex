@@ -3,6 +3,13 @@ Part 1:
 Headed each file
 R1 and R4 are sequences, R2 and R3 are barcodes that are mostly reverse complemnented
 
+1i. 
+| File | Label|
+| --- | --- |
+| 1294_S1_L008_R1_001.fastq.gz | read1 |
+| 1294_S1_L008_R2_001.fastq.gz | index1 |
+| 1294_S1_L008_R3_001.fastq.gz | index2 |
+| 1294_S1_L008_R4_001.fastq.gz | read2 |
 
 
 wc -l: 1452986940; divide by 4 to get 363246735 individual reads
