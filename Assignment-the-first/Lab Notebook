@@ -6,7 +6,7 @@ R1 and R4 are sequences, R2 and R3 are barcodes that are mostly reverse complemn
 1i. 
 | File | Label|
 | --- | --- |
-| 1294_S1_L008_R1_001.fastq.gz | read1 |
+| 1294_S1_L008_R1_001.fastq.gz | read1 | 
 | 1294_S1_L008_R2_001.fastq.gz | index1 |
 | 1294_S1_L008_R3_001.fastq.gz | index2 |
 | 1294_S1_L008_R4_001.fastq.gz | read2 |
@@ -31,4 +31,3 @@ Each header from each file matches, but indices are not found in the full length
 Will need to 
 
 
-  
