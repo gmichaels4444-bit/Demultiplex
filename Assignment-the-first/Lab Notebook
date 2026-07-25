@@ -1,0 +1,33 @@
+20250721
+Part 1:
+Headed each file
+R1 and R4 are sequences, R2 and R3 are barcodes that are mostly reverse complemnented
+
+1i. 
+| File | Label|
+| --- | --- |
+| 1294_S1_L008_R1_001.fastq.gz | read1 | 
+| 1294_S1_L008_R2_001.fastq.gz | index1 |
+| 1294_S1_L008_R3_001.fastq.gz | index2 |
+| 1294_S1_L008_R4_001.fastq.gz | read2 |
+
+
+wc -l: 1452986940; divide by 4 to get 363246735 individual reads
+  All files are the same length
+ 1ii. 
+ zcat 1294_S1_L008_R1_001.fastq.gz | head -2 | tail -1 | wc
+  101 (102 counting newline)
+ zcat 1294_S1_L008_R2_001.fastq.gz | head -2 | tail -1 | wc
+  8 (9 counting newlines)
+  phred +33 
+
+
+Demultiplexing:
+Each header from each file matches, but indices are not found in the full length reads.
+  Indices with the same header in R2 and R3 are generally reverse compliments
+  All or almost all indices have an "N" at the first position
+  Will need to reverse match internal 6 positions of each index to determine index matchiong
+    Write a reverse complement function for this
+Will need to 
+
+
