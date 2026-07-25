@@ -17,7 +17,7 @@
     
 ## Part 2
 1. Define the problem
-       Determine if index pairs are correct, incorrect, or are of low quality. Create fastq files for each correct index pair combination or write out to files for incorrect pairings or for barcodes with low quality.
+       Determine if index pairs are correct, incorrect, or are of low quality. Create fastq files for each correct index pair combination or write out to files for incorrect pairings or for barcodes with low quality. Calculate the number of sequences with each correct index pairing, with any hopping, or with unknown/low quality indices
 2. Output should be output files (24 fwd by barcode, 24 rev by barcode, 2 index hopped, 2 for unknown barcodes), counts of each
 3. Upload your [4 input FASTQ files](../TEST-input_FASTQ) and your [>=6 expected output FASTQ files](../TEST-output_FASTQ).
 4. Pseudocode

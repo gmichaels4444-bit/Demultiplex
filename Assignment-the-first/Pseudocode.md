@@ -8,29 +8,32 @@ import argparse
 	add argument: ("-rb", "--rev_bc", help="fastq_filename", type=str, default="contigs.fasta")
 	add argument: ("-f2", "--file2", help="fastq_filename", type=str, default="contigs.fasta")
 
-create dictionary of indexes.txt 
+create dictionary from indexes.txt 
 indexdict={} initializing dict
-	keys are barcode pairs, both matched and mismatched, and unknown
+```keys are barcode pairs, both matched and hopped, and unknown```
 open args.index (index.txt file)
 	for barcode in index:
 		keyhalf=barcode
 			for other_index in index
 				key= append "-"other_index to keyhalf using fstring
 				values are set to 0, to be counts of each key pair
+Used for verifying matches
 
 create set of indexes with matched pairs, as well as "unknown" and "mismatch"
-indexset=set("unknown","mismatch")
+indexset=set("unknown","mismatch") Initializing the set with 2 values that are not added in the flow of the loop
 for key in indexdict:
 	splitkey=split key by "-"
-	if splitkey position 1== splitkey position 2:
-		add key to indexset
+	if splitkey position 1 matches splitkey position 2:
+		add combined key to indexset 
 	else:
 		continue looping
+Useful for naming and opening output files and counting later
 
-
-define reverse_comp(sequence => string):
+define reverse_comp(sequence: string)=> string
+	'''takes Nucleic acid sequence and outputs the reverse complement'''
 	reverse_complement_string=empty
-	for letter in string:
+	run input string through bioinfo.validate_base_seq to ensure it is DNA
+	for each letter in string:
 		replace letter with complement in reverse_complement_string; ie
 			if letter is "A"
 				replace with "T" in reverse_complement_string
@@ -93,8 +96,8 @@ for key in indexdict:
 		print indexdict key and value (this will print out counts of unknown inidces)
 	else: 
 		splitkey=split key by "-"
-		if splitkey position 1== splitkey position 2:
+		if splitkey position 1 is the same as splitkey position 2:
 			print indexdict key and value (this will print out matched pairs' counts)
 		else:
-			add indexdict value to mismatch_count (this will sum all of the mismatched index counts together)
-print mismatch_count 
+			add indexdict value to mismatch_count (this will sum all of the hopped index counts together)
+print mismatch_count (Prints count of all hopped indices collectively)
