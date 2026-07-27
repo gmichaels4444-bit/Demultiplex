@@ -1,5 +1,5 @@
 shebang python
-
+```
 import bioinfo.py as bioinfo
 import argparse
 	add argument: ("-i", "--index", help="index file", type=str, default="index.txt")
@@ -101,3 +101,4 @@ for key in indexdict:
 		else:
 			add indexdict value to mismatch_count (this will sum all of the hopped index counts together)
 print mismatch_count (Prints count of all hopped indices collectively)
+```
