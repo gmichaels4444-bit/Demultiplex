@@ -1,4 +1,4 @@
-420250721
+420250721 ### record commands###
 Part 1:
 Headed each file
 R1 and R4 are sequences, R2 and R3 are barcodes that are mostly reverse complemnented
@@ -33,21 +33,44 @@ Will need to
 
 
 
-Created test fastq files from each fastq file using  ```head -20 <file>```
-Edited index files and qscores to have entries with matching barcodes, hopped barcodes, Ns, and barcodes that were not present in the indices
+Created test fastq files from each fastq file using  ```head -12 <file>```
+Edited index files and qscores to have entries with matching barcodes, hopped barcodes, Ns
 
 **** finish this later***
 
 
 Assignment the first part 1:
-Perform some initial data exploration! Record any bash commands you used inside a lab notebook (submit to this repo!).
+imported gzip and argparse to make file inputs easier
+Made py_batch.sh shell script to run sbatch on dataanalysis.py file
 
-Indices are in R2 and R3, with R3 mostly appearing to be 
-Determine which files contain the indexes, and which contain the paired end reads containing the biological data of interest. Create a table and label each file with either read1, read2, index1, or index2.
-Determine the length of the reads in each file.
-Determine the phred encoding for these data.
-Generate a per base distribution of quality scores for read1, read2, index1, and index2. Average the quality scores at each position for all reads and generate a per nucleotide mean distribution as you did in part 1 of PS4 in Bi621. (NOTE! Do NOT use the 2D array strategy from PS9 - you WILL run out of memory!)
-Turn in the 4 histograms.
-What is a good quality score cutoff for index reads and biological read pairs to utilize for sample identification and downstream analysis, respectively? Justify your answer.
-How many indexes have undetermined (N) base calls? (Utilize your command line tool knowledge. Submit the command(s) you used. CHALLENGE: use a one-line command)
+using gzip.open and "rt" setting do deal with files being zipped
+
+Used code from PS4 as basis, adding in argparse and fstrings to make organization, adaptability, and naming easier.
+Initially, did not correctly calculate division by lines.
+Checked that lengths were accurate by intentionally inputting read lengths that were too long.
+
+~0.35 seconds/record *363246735 records =
+	Command being timed: "./dataanalysis.py -i ../TEST-input_FASTQ/ -f R1.test.fastq -o test1.png -l 101"
+	User time (seconds): 1.06
+	System time (seconds): 0.04
+	Percent of CPU this job got: 202%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.54
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 75692
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 16056
+	Voluntary context switches: 805
+	Involuntary context switches: 9
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
 
