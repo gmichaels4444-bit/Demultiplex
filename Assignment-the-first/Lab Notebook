@@ -1,7 +1,8 @@
 420250721 ### record commands###
 Part 1:
 Headed each file
-R1 and R4 are sequences, R2 and R3 are barcodes that are mostly reverse complemnented
+R1 and R4 are sequences, R2 and R3 are barcodes that are mostly reverse complements
+R2 and R3 have Ns in the first position for many of the earlier entries, although this does not seem to be the case for the majority of the files. 
 
 1i. 
 | File | Label|
@@ -75,4 +76,29 @@ Checked that lengths were accurate by intentionally inputting read lengths that 
 	Exit status: 0
 
 
-Ran possibly complete script at ~9 am on 7/30/26
+Ran possibly complete script at ~9 am on 7/30/26:
+
+Total time:
+Summarized usr/bin/time -v output:
+	Command being timed: "./dataanalysis.py -i /projects/bgmp/shared/2017_sequencing/ -f 1294_S1_L008_R1_001.fastq.gz -o R1 -l 101"
+	User time (seconds): 3135.36
+	System time (seconds): 0.80
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 52:24.39
+	Command being timed: "./dataanalysis.py -i /projects/bgmp/shared/2017_sequencing/ -f 1294_S1_L008_R2_001.fastq.gz -o R2 -l 8"
+	User time (seconds): 473.47
+	System time (seconds): 0.12
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 7:54.48
+	Command being timed: "./dataanalysis.py -i /projects/bgmp/shared/2017_sequencing/ -f 1294_S1_L008_R3_001.fastq.gz -o R3 -l 8"
+	User time (seconds): 476.67
+	System time (seconds): 0.17
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 7:58.41
+	Command being timed: "./dataanalysis.py -i /projects/bgmp/shared/2017_sequencing/ -f 1294_S1_L008_R4_001.fastq.gz -o R4 -l 101"
+	User time (seconds): 3098.64
+	System time (seconds): 0.81
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 51:49.45
+
+
