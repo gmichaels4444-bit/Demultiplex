@@ -21,12 +21,8 @@ Each header from each file matches, but indices are not found in the full length
   All or almost all indices have an "N" at the first position
   Will need to reverse match internal 6 positions of each index to determine index matchiong
     Write a reverse complement function for this
-Will need to 
 
-
-
-
-Created test fastq files from each fastq file using  ```head -12 <file> > <new file>```
+Created test fastq files from each fastq file using  ```gzcat <file> | head -12 > <new file>```
 Edited index files and qscores to have entries with matching barcodes, hopped barcodes, Ns
 
 **** finish this later***
@@ -105,6 +101,38 @@ no output; grep command would include non-"N" containing indices
 
 ran ```grep "^+" -B 1 ../TEST-input_FASTQ/R[2-3].test.fastq | grep -v "^+\n" | grep [N]```
 to test regex on file and use of grep modifiers; correct lines pulled
+
+Ran ```/usr/bin/time -v zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R[2-3]_001.fastq.gz | grep "^+" -B 1 | grep -v "^+\n" | grep [N] | wc -l```
+
+	Command being timed: "zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz"
+	User time (seconds): 143.68
+	System time (seconds): 2.55
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:26.68
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 3160
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 303
+	Voluntary context switches: 208
+	Involuntary context switches: 209
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+7304664
+
+7304664/363246735 (~2%) of indices contain Ns
+
+
+
 
 
 
