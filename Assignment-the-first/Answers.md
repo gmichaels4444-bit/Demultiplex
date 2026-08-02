@@ -12,12 +12,20 @@
 
 2. Per-base NT distribution
     1. Use markdown to insert your 4 histograms here.
-    2. For an individual base, 20. 
-    3. grep -v "^@" <filehandle> | grep -v "^+\n" | grep [ATGCN] | wc -l
+    ![R1 histogram](R1.png)
+    ![R2 histogram](R2.png)
+    ![R3 histogram](R3.png)
+    ![R4 histogram](R4.png)
+
+    2. For an individual base in indices, 25. All base positions in the index have qscores >30, so 25 should provide a sufficient buffer. Indices are also cross checked with their reverse complement and against the index values, so any misreads would have to fail multiple failsafes and have incorrect barcodes in order to cause analysis problems. 
+    A cutoff of 30 should be suitable for whole biological reads for downstream analysis, since almost all positions have an average qscore >35. This is considered a high cutoff for sequencing analysis, but should be viable in this case due to the overall high average qscores
+    3. ```/usr/bin/time -v zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R[2-3]_001.fastq.gz | grep "^+" -B 1 | grep -v "^+\n" | grep [N] | wc -l```
+    7304664 indices with "N"
+
     
 ## Part 2
 1. Define the problem
-       Determine if index pairs are correct, incorrect, or are of low quality. Create fastq files for each correct index pair combination or write out to files for incorrect pairings or for barcodes with low quality. Calculate the number of sequences with each correct index pairing, with any hopping, or with unknown/low quality indices
+       Determine if index pairs are correct, incorrect, or are of low quality. Create fastq files for each correct index pair combination or write out to files for incorrect pairings or for barcodes with low quality. Calculate the number of sequences with each correct index pairing, with any hopping, or with unknown/low quality indices.
 2. Output should be output files (24 fwd by barcode, 24 rev by barcode, 2 index hopped, 2 for unknown barcodes), counts of each
 3. Upload your [4 input FASTQ files](../TEST-input_FASTQ) and your [>=6 expected output FASTQ files](../TEST-output_FASTQ).
 4. Pseudocode
