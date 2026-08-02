@@ -1,16 +1,8 @@
 420250721 ### record commands###
 Part 1:
-Headed each file
+Headed -12 <file>
 R1 and R4 are sequences, R2 and R3 are barcodes that are mostly reverse complements
 R2 and R3 have Ns in the first position for many of the earlier entries, although this does not seem to be the case for the majority of the files. 
-
-1i. 
-| File | Label|
-| --- | --- |
-| 1294_S1_L008_R1_001.fastq.gz | read1 | 
-| 1294_S1_L008_R2_001.fastq.gz | index1 |
-| 1294_S1_L008_R3_001.fastq.gz | index2 |
-| 1294_S1_L008_R4_001.fastq.gz | read2 |
 
 
 wc -l: 1452986940; divide by 4 to get 363246735 individual reads
@@ -34,7 +26,7 @@ Will need to
 
 
 
-Created test fastq files from each fastq file using  ```head -12 <file>```
+Created test fastq files from each fastq file using  ```head -12 <file> > <new file>```
 Edited index files and qscores to have entries with matching barcodes, hopped barcodes, Ns
 
 **** finish this later***
@@ -100,5 +92,21 @@ Summarized usr/bin/time -v output:
 	System time (seconds): 0.81
 	Percent of CPU this job got: 99%
 	Elapsed (wall clock) time (h:mm:ss or m:ss): 51:49.45
+
+Added histograms to Answers.md
+
+For answer 3:
+Tried:
+```
+/usr/bin/time -v grep -v "^@" /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R2_001.fastq.gz | grep -v "^+\n" | grep [ATGCN] | grep [N] | wc -l
+/usr/bin/time -v grep -v "^@" /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R3_001.fastq.gz | grep -v "^+\n" | grep [ATGCN] | grep [N] | wc -l
+```
+no output; grep command would include non-"N" containing indices
+
+ran ```grep "^+" -B 1 ../TEST-input_FASTQ/R[2-3].test.fastq | grep -v "^+\n" | grep [N]```
+to test regex on file and use of grep modifiers; correct lines pulled
+
+
+
 
 
