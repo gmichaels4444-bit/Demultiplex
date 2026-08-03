@@ -1,9 +1,9 @@
 420250721 ### record commands###
 Part 1:
-Headed -12 <file>
+Head <file>
 R1 and R4 are sequences, R2 and R3 are barcodes that are mostly reverse complements
 R2 and R3 have Ns in the first position for many of the earlier entries, although this does not seem to be the case for the majority of the files. 
-
+up to head -40; most index reads at the beginnign of R2 and R3 contain an initial "N"
 
 wc -l: 1452986940; divide by 4 to get 363246735 individual reads
   All files are the same length
@@ -24,8 +24,6 @@ Each header from each file matches, but indices are not found in the full length
 
 Created test fastq files from each fastq file using  ```gzcat <file> | head -12 > <new file>```
 Edited index files and qscores to have entries with matching barcodes, hopped barcodes, Ns
-
-**** finish this later***
 
 
 Assignment the first part 1:
@@ -63,10 +61,8 @@ Checked that lengths were accurate by intentionally inputting read lengths that 
 	Page size (bytes): 4096
 	Exit status: 0
 
-
 Ran possibly complete script at ~9 am on 7/30/26:
-
-Total time:
+Total time: 2h
 Summarized usr/bin/time -v output:
 	Command being timed: "./dataanalysis.py -i /projects/bgmp/shared/2017_sequencing/ -f 1294_S1_L008_R1_001.fastq.gz -o R1 -l 101"
 	User time (seconds): 3135.36
@@ -129,7 +125,7 @@ Ran ```/usr/bin/time -v zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_
 	Exit status: 0
 7304664
 
-7304664/363246735 (~2%) of indices contain Ns
+7304664/(363246735*2 files) =(~1%) of indices contain Ns
 
 
 
