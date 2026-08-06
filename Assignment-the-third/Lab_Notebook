@@ -1,5 +1,5 @@
 Copied pseudocode over to new file
-Rewrote as real code
+Rewrote as real code, including typo fixes and deletions of redundant pseudocode. 
 
 
 Changes:
@@ -17,9 +17,6 @@ format of "barcode pair":[open(f'{args.outpath}<barcode pair>_R1.fastq',"w"),ope
 
 Added read-by-read qscore cutoff using an additional inner loop.
 Got around fornmatting issues using "written" flag per Leslie's suggestion
-
-
-
 
 For demultiplexing small test files:
 	Command being timed: "./demultiplex.py -ip ../TEST-input_FASTQ/ -i indexes.txt -f1 R1.test.fastq -fb R2.test.fastq -rb R3.test.fastq -f2 R4.test.fastq -op ./testruns/ -q 10"
@@ -81,7 +78,7 @@ Minor (reclaiming a frame) page faults: 34825
 Voluntary context switches: 951
 Involuntary context switches: 27
 
-Ran on full files with qscore cutoffs of 25 and 0 (by individual index base):
+Made demux direcotry and ran on full files with qscore cutoffs of 25 and 0 (by individual index base):
 
 
 
