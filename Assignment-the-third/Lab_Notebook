@@ -63,6 +63,25 @@ Command to create files:
 
 
 Added gzip.open modifier for input files and ran
-Values add up and make sense; 32% of reads unknown, 67.9% match, 0.1% hopped
-Bar chart does not show up correctly
+Values add up and make sense for cutoff of 25; 32% of reads unknown, 67.9% match, 0.1% hopped
+
+Command being timed: "./demultiplex.py -ip ../big_tests/ -i indexes.txt -f1 1294_S1_L008_R1_001_test.fastq.gz -fb 1294_S1_L008_R2_001_test.fastq.gz -rb 1294_S1_L008_R3_001_test.fastq.gz -f2 1294_S1_L008_R4_001_test.fastq.gz -op ./testruns/ -q 10"
+User time (seconds): 2.67
+System time (seconds): 0.07
+Percent of CPU this job got: 103%
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.66
+Average shared text size (kbytes): 0
+Average unshared data size (kbytes): 0
+Average stack size (kbytes): 0
+Average total size (kbytes): 0
+Maximum resident set size (kbytes): 191828
+Average resident set size (kbytes): 0
+Major (requiring I/O) page faults: 0
+Minor (reclaiming a frame) page faults: 34825
+Voluntary context switches: 951
+Involuntary context switches: 27
+
+Ran on full files with qscore cutoffs of 25 and 0 (by individual index base):
+
+
 
