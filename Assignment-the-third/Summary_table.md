@@ -1,4 +1,4 @@
-| Qscore cutoff | Mapped Reads | % Mapped Reads | Unknown Reads | % Unknown Reads | Hopped Reads | % Hopped Reads | Total Reads |
+| Qscore cutoff | Matched Reads Count | % Matched Reads | Unknown Reads Count | % Unknown Reads | Hopped Reads Count | % Hopped Reads | Total Reads |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 0 | Row 1, Cell 2 | Row 1, Cell 3 | Row 1, Cell 2 | Row 1, Cell 3 | Row 1, Cell 2 | Row 1, Cell 3 |
-| 25 | Row 2, Cell 2 | Row 2, Cell 3 | Row 1, Cell 2 | Row 1, Cell 3 | Row 1, Cell 2 | Row 1, Cell 3 |
+| 0 | 331755033 | 91.3 | 30783962 | 8.5 | Row 1, Cell 2 | 0.2 | 363246735 |
+| 25 | 307993310 | 84.8 | 	54692531 | 15.1 | 560894 | 0.2 | 363246735 |
