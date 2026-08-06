@@ -1,0 +1,84 @@
+Copied pseudocode over to new file
+Rewrote as real code, including typo fixes and deletions of redundant pseudocode. 
+
+
+Changes:
+Fully fleshed out args, including filepaths and qscore cutoffs
+Deleted separate dictionary for individual barcodes, will manually calculate values for this in the final data analysis step. 
+
+Made dictionary to open output files after discussion
+Open output files (24 fwd by barcode, 24 rev by barcode, 2 index hopped, 2 unknown barcodes (unk)) in write mode
+will open an output file for each read file for all successful pairings, a hopped bin file, and unknown indices
+format of "barcode pair":[open(f'{args.outpath}<barcode pair>_R1.fastq',"w"),open(f'{args.outpath}<barcode pair>_R2.fastq',"w")]
+  causes files to be opened when value is pulled, 
+    filedict["<pair>"][0].write(f'{R1outheader}\n{seq1}\n{plus1}\n{qscore1}')
+		filedict["<pair>"][1].write(f'{R2outheader}\n{seq2}\n{plus4}\n{qscore2}')
+
+
+Added read-by-read qscore cutoff using an additional inner loop.
+Got around fornmatting issues using "written" flag per Leslie's suggestion
+
+For demultiplexing small test files:
+	Command being timed: "./demultiplex.py -ip ../TEST-input_FASTQ/ -i indexes.txt -f1 R1.test.fastq -fb R2.test.fastq -rb R3.test.fastq -f2 R4.test.fastq -op ./testruns/ -q 10"
+	User time (seconds): 1.10
+	System time (seconds): 0.08
+	Percent of CPU this job got: 14%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:08.17
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 73216
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 15980
+	Voluntary context switches: 3175
+	Involuntary context switches: 5
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+
+
+
+Data analysis:
+Pie chart for percents matched, hopped, unknown
+  good overview of data quality
+Bar chart for each matched index, hopped bin, and unknown bin
+  Shows preponderance of each individual prep
+Created stats_dict using indexdict with 
+  keys=barcode (where barcodes matched), "hopped", or "unknown"
+  values=counts
+
+Head -4000000 (1 mn records) for each original file for final testing, especially for data analysis
+Command to create files:
+```zcat /projects/bgmp/shared/2017_sequencing/1294_S1_L008_R1_001.fastq.gz | head -1000000 | gzip > 1294_S1_L008_R1_001_test.fastq.gz```
+
+
+Added gzip.open modifier for input files and ran
+Values add up and make sense for cutoff of 25; 32% of reads unknown, 67.9% match, 0.1% hopped
+
+Command being timed: "./demultiplex.py -ip ../big_tests/ -i indexes.txt -f1 1294_S1_L008_R1_001_test.fastq.gz -fb 1294_S1_L008_R2_001_test.fastq.gz -rb 1294_S1_L008_R3_001_test.fastq.gz -f2 1294_S1_L008_R4_001_test.fastq.gz -op ./testruns/ -q 10"
+User time (seconds): 2.67
+System time (seconds): 0.07
+Percent of CPU this job got: 103%
+Elapsed (wall clock) time (h:mm:ss or m:ss): 0:02.66
+Average shared text size (kbytes): 0
+Average unshared data size (kbytes): 0
+Average stack size (kbytes): 0
+Average total size (kbytes): 0
+Maximum resident set size (kbytes): 191828
+Average resident set size (kbytes): 0
+Major (requiring I/O) page faults: 0
+Minor (reclaiming a frame) page faults: 34825
+Voluntary context switches: 951
+Involuntary context switches: 27
+
+Made demux direcotry and ran on full files with qscore cutoffs of 25 and 0 (by individual index base):
+
+
+
