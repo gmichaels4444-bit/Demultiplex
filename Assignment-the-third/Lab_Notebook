@@ -96,3 +96,4 @@ Counts for cutoff of 25 are shifted logically from the cutoff of 0 values (more 
 	Not directly comparable to others due to using base-by-base cutoff
 
 Made summary markdown table of matched, unkown, hopped counts and percentages (Summary_table.md)
+Added figures
