@@ -2,20 +2,20 @@
 
 import bioinfo
 import gzip
-import matplotlib as plt
 import itertools
 import argparse
+import matplotlib.pyplot as plt
 
 def get_args():
 	parser = argparse.ArgumentParser(description="k-mer global variables")
-	parser.add_argument("-ip", "--inpath", help="input filepath", type=str, default="/projects/bgmp/gmich/bioinfo/Bi622/Demultiplex/TEST-input_FASTQ")
+	parser.add_argument("-ip", "--inpath", help="input filepath", type=str, default="/projects/bgmp/gmich/bioinfo/Bi622/Demultiplex/TEST-input_FASTQ/")
 	parser.add_argument("-i", "--index", help="index file", type=str, default="indexes.txt")
 	parser.add_argument("-f1", "--file1", help="R1 fastq_filename", type=str, default="R1.test.fastq")
 	parser.add_argument("-fb", "--fwd_bc", help="R2 fastq_filename", type=str, default="R2.test.fastq")
 	parser.add_argument("-rb", "--rev_bc", help="R3 fastq_filename", type=str, default="R3.test.fastq")
 	parser.add_argument("-f2", "--file2", help="R4 fastq_filename", type=str, default="R4.test.fastq")
-	parser.add_argument("-op", "--outpath", help="index file", type=str, default="index.txt")
-	parser.add_argument("-q", "--qcut", help="qscore cutoff", type=str, default="20")
+	parser.add_argument("-op", "--outpath", help="output filepath", type=str, default="./testruns/")
+	parser.add_argument("-q", "--qcut", help="qscore cutoff", type=int, default="0") #optional
 	return parser.parse_args()
 args= get_args()
 
@@ -23,7 +23,7 @@ def reverse_comp(sequence: str)-> str:
 	'''takes Nucleic acid sequence and outputs the reverse complement'''
 	complement_string=""
 	reverse_complement_string=""
-	bioinfo.validate_base_seq(sequence)
+	# bioinfo.validate_base_seq(sequence)
 	for  letter in sequence:
 		#replace letter with complement in reverse_complement_string; ie
 		if letter == "A":
@@ -38,116 +38,134 @@ def reverse_comp(sequence: str)-> str:
 			complement_string+="N"
 	reverse_complement_string = complement_string[::-1]
 	return reverse_complement_string
-assert reverse_comp("ATGCN")== "NGCAT"
+# if __name__ == "__main__":
+# 	assert reverse_comp("ATGCN") == "NGCAT"
+# 	print("reverse_comp works")
 
-with open(f'{args.ip}{args.index}', "r") as index: 
+def read_record(fh: list)->list:
+	'''function for looping over a fastq file within a while True loop'''
+	record=[]
+	for i in range(4):
+		record.append(fh.readline().strip("\n"))
+	return record
+
+# #create dictionary from indexes.txt 
+# #used for counting and verifying matches
+barcodes=[]
+with open(f'{args.inpath}{args.index}', "r") as index: 
 	for line in index:
-		line.split()
-	itertools.product(index[5], repeat=1)
+		line=line.strip("\n")
+		splitline=line.split("\t")
+		if "index" not in splitline:
+			barcodes.append(str(splitline[4]))
 
+indexdict={"unknown": 0} #initializing dict
+for pair in itertools.product(barcodes, repeat=2):
+	dashpair=f'{pair[0]}-{pair[1]}'
+	indexdict[dashpair]=0
+#print(indexdict)
+#```keys are barcode pairs writen as "barcode1-barcode2", both matched and hopped, and unknown```
 
-
-
-#create dictionary from indexes.txt 
-#used for counting and verifying matches
-indexdict={} #initializing dict
-#```keys are barcode pairs, both matched and hopped, and unknown```
-with open(f'{args.ip}{args.index}', "r") as index: 
-	for barcode in index:
-		keyhalf=barcode
-			for other_index in index:
-				key= append "-"other_index to keyhalf using fstring
-				if key in indexdict,
-					
-				values are set to 0, to be counts of each key pair
-
-
-
-
-
-
-
-
-#create set of indexes with matched pairs, as well as "unknown" and "mismatch"
+#create set of filehandles with matched pairs, as well as "unknown" and "hopped"
 #Useful for naming and opening output files and counting later
-indexset=set(["unknown","mismatch"]) #Initializing the set with 2 values that are not added in the flow of the loop
-for key in indexdict:
-	splitkey=key.split("-")
-	if splitkey[1] == splitkey[2]:
-		indexset+=key
-
+#```keys are barcode pairs writen as "barcode1-barcode2", MATCHED ONLY, hopped bin, and unknown bin```
+filedict={"unknown":[open(f'{args.outpath}unknown_R1.fastq',"w"),open(f'{args.outpath}unknown_R2.fastq',"w")],"hopped":[open(f'{args.outpath}hopped_R1.fastq',"w"),open(f'{args.outpath}hopped_R2.fastq',"w")]}		#Initializing the dict with 2 values that are not added in the flow of the loop
+for barcode in barcodes:
+	filedict[barcode]=[open(f'{args.outpath}{barcode}-{barcode}_R1.fastq',"w"),open(f'{args.outpath}{barcode}-{barcode}_R2.fastq',"w")]
 #Open output files (24 fwd by barcode, 24 rev by barcode, 2 index hopped, 2 unknown barcodes (unk)) in write mode
-#will open an output file for each read file foe all successful pairings, a mismatch bin file, and unknown indexes
-for entry in indexset:
-	open(f'{args.file1}_{entry}', "w")
-	open(f'{args.file2}_{entry}, "w")
+#will open an output file for each read file for all successful pairings, a hopped bin file, and unknown indices
 
+### good to here###
+with gzip.open(f'{args.inpath}{args.file1}',"rt") as fh1, gzip.open(f'{args.inpath}{args.fwd_bc}',"rt") as fbc, gzip.open(f'{args.inpath}{args.rev_bc}',"rt") as rbc, gzip.open(f'{args.inpath}{args.file2}',"rt") as fh2:
+	while True:
+		header1=fh1.readline().strip('\n')
+		headerfbc=fbc.readline().strip('\n')
+		headerrbc=rbc.readline().strip('\n')
+		header2=fh2.readline().strip('\n')
 
+		seq1=fh1.readline().strip('\n')
+		seq_fbc=fbc.readline().strip('\n')
+		seq_rbc=rbc.readline().strip('\n')
+		seq2=fh2.readline().strip('\n')
 
-open(args.file1,"r") as fh1, open(args.fwd_bc,"r") as fbc, open(args.rv_bc,"r") as rbc, open(args.file2,"r") as fh2 
-While True:
-	header1=fh1.readline().strip(\n)
-	headerfbc=fwd_bc.readline().strip()
-	headerrbc=rv_bc.readline().strip
-	header2=fh2.readline().strip
+		plus1=fh1.readline().strip('\n')
+		plus2=fbc.readline().strip('\n')
+		plus3=rbc.readline().strip('\n')
+		plus4=fh2.readline().strip('\n')
 
-	seq1=fh1.readline().strip
-	fbc_seq=fwd_bc.readline().strip
-	rbc_seq=rv_bc.readline().strip
-	seq2=fh2.readline().strip
-
-	plus1=fh1.readline().strip
-	plus2=fwd_bc.readline().strip
-	plus3=rv_bc.readline().strip
-	plus4=fh2.readline().strip
-
-	qscore1=fh1.readline().strip
-	qscore_fbc=fwd_bc.readline().strip
-	qscore_rbc=rv_bc.readline().strip
-	qscore2=fh2.readline()v
-
-
-		header1.apppend(seq1)
-		Reverse_comp(R3 sequence)
-			If R2 or the reverse_comp of R3 is not in indexdict (ie has an "N"): 
-					write all 4 lines of R1 to R1 unk file, appending R2 and reverse complemented R3 sequences to header
-					write all 4 lines of R4 to R4 unk file, appending R2 and reverse complemented R3 sequences to header
-					Add 1 to value of unknown in indexdict
-			Else:
-				if bioinfo.qualscores(R2 sequence) or bioinfo.qualscores(R3 sequence) is less than the user cutoff args.qscorecutoff
-					write all 4 lines of R1 to R1 unk file, appending R2 and reverse complemented R3 sequences to header
-					write all 4 lines of R4 to R4 unk file, appending R2 and reverse complemented R3 sequences to header
-					Add 1 to unknown indexdict value
-				elif R2 sequence line is identical to the reverse complement of R3 and is in indexdict keys
-					add 1 to indexdict value
-					write all 4 lines of R1 to R1 file for appropriate index, appending R2 and reverse complemented R3 sequences to header
-					write all 4 lines of R4 to R4 file for appropriate index, appending R2 and reverse complemented R3 sequences to header
-				elif R2 sequence line does not match the reverse complement of R3 and this combination is in indexdict keys
-					write all 4 lines of R1 to R1 mismatch file, appending R2 and reverse complemented R3 sequences to header
-					write all 4 lines of R4 to R4 mismatch file, appending R2 and reverse complemented R3 sequences to header
-					Add 1 to indexdict value 
-				else (only occurs if index sequences are not in barcodes)
-					write all 4 lines of R1 to R1 unk file, appending R2 and reverse complemented R3 sequences to header
-					write all 4 lines of R4 to R4 unk file, appending R2 and reverse complemented R3 sequences to header
-					Add 1 to unknown indexdict value
-		if header="":
-			end
-
-
-close files
-
-
-
-Printing counts commands:
-mismatch_count=0
-for key in indexdict:
-	if key=="unknown" ##doing this first to avoid conflicts with splitting##
-		print indexdict key and value (this will print out counts of unknown inidces)
-	else: 
-		splitkey=split key by "-"
-		if splitkey position 1 is the same as splitkey position 2:
-			print indexdict key and value (this will print out matched pairs' counts)
+		qscore1=fh1.readline().strip('\n')
+		qscore_fbc=fbc.readline().strip('\n')
+		qscore_rbc=rbc.readline().strip('\n')
+		qscore2=fh2.readline().strip('\n')
+		if header1=="":
+			break
+		bcpair=f'{seq_fbc}-{reverse_comp(seq_rbc)}'
+		R1outheader=f'{header1}_{bcpair}'
+		R2outheader=f'{header2}_{bcpair}'
+		#appending barcode pair to each header before identifying file to write to
+		if bcpair not in indexdict: #ie Ns or incorrect reads present
+				filedict["unknown"][0].write(f'{R1outheader}\n{seq1}\n{plus1}\n{qscore1}')
+				filedict["unknown"][1].write(f'{R2outheader}\n{seq2}\n{plus4}\n{qscore2}')
+				indexdict["unknown"]+=1
 		else:
-			add indexdict value to mismatch_count (this will sum all of the hopped index counts together)
-print mismatch_count (Prints count of all hopped indices collectively)
+			written=False
+			for pos, base in enumerate(qscore_fbc):
+				if bioinfo.convert_phred(base)<args.qcut or bioinfo.convert_phred(qscore_fbc[pos])<args.qcut:
+					filedict["unknown"][0].write(f'{R1outheader}\n{seq1}\n{plus1}\n{qscore1}')
+					filedict["unknown"][1].write(f'{R2outheader}\n{seq2}\n{plus4}\n{qscore2}')
+					indexdict["unknown"]+=1
+					written=True
+					break
+			if not written:
+				if seq_fbc==reverse_comp(seq_rbc):
+					filedict[seq_fbc][0].write(f'{R1outheader}\n{seq1}\n{plus1}\n{qscore1}')
+					filedict[seq_fbc][1].write(f'{R2outheader}\n{seq2}\n{plus4}\n{qscore2}')
+					indexdict[bcpair]+=1
+				elif seq_fbc!=reverse_comp(seq_rbc):
+					filedict["hopped"][0].write(f'{R1outheader}\n{seq1}\n{plus1}\n{qscore1}')
+					filedict["hopped"][1].write(f'{R2outheader}\n{seq2}\n{plus4}\n{qscore2}')
+					indexdict[bcpair]+=1
 
+for barcode in filedict:
+	filedict[barcode][0].close()
+	filedict[barcode][1].close()
+
+statsdict={"Hopped":0}
+hopped_count=0
+match_count=0
+unknown_count=0
+#will only have counts for matched index, hopped bin, and unknown bin
+with open(f'Demultiplex_stats_cutoff={args.qcut}.tsv', "w") as stats:
+	for bcpair in indexdict:
+		print(f'{bcpair}\t{indexdict[bcpair]}', file=stats)
+		if bcpair=="unknown":
+			statsdict["Unknown"]=indexdict["unknown"]
+			unknown_count=indexdict["unknown"]
+		else:
+			barcodes=bcpair.split("-")
+			if barcodes[0]==barcodes[1]:
+				match_count+=indexdict[bcpair]
+				statsdict[barcodes[0]]=indexdict[bcpair]
+			else:
+				statsdict["Hopped"]+=indexdict[bcpair]
+				hopped_count+=indexdict[bcpair]
+	print(f'Matched Reads\t{match_count}\nHopped Reads\t{hopped_count}\nUnknown Reads\t{unknown_count}', file=stats)
+
+#pie chart of matched, hopped, and 
+plt.figure(1)
+labels = 'Matched', 'Hopped', 'Unknown'
+sizes = [match_count, hopped_count,unknown_count]
+plt.pie(sizes, labels=labels, autopct='%1.1f%%')
+plt.savefig(f'Demultiplex_percents_cutoff={args.qcut}.png')
+plt.close(f'Demultiplex_percents_cutoff={args.qcut}.png')
+
+#bar chart of reads by matched pair, hopped, and unknown
+plt.figure(2)
+plt.bar(list(statsdict.keys()),list(statsdict.values()))
+plt.title('Number of Reads by Index Pair')
+plt.xlabel('Matched Index')
+plt.ylabel('Count')
+plt.xticks(fontsize=12, rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig(f'Demultiplex_stats_cutoff={args.qcut}.png')
+plt.close(f'Demultiplex_stats_cutoff={args.qcut}.png')
