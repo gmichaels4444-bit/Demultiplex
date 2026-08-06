@@ -79,6 +79,20 @@ Voluntary context switches: 951
 Involuntary context switches: 27
 
 Made demux direcotry and ran on full files with qscore cutoffs of 25 and 0 (by individual index base):
+	Command being timed: "./demultiplex.py -ip /projects/bgmp/shared/2017_sequencing/ -i indexes.txt -f1 1294_S1_L008_R1_001.fastq.gz -fb 1294_S1_L008_R2_001.fastq.gz -rb 1294_S1_L008_R3_001.fastq.gz -f2 1294_S1_L008_R4_001.fastq.gz -op /scratch/bgmp/gmich/demux/ -q 25"
+	User time (seconds): 2488.27
+	System time (seconds): 18.73
+	Percent of CPU this job got: 84%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 49:28.61
 
+	Command being timed: "./demultiplex.py -ip /projects/bgmp/shared/2017_sequencing/ -i indexes.txt -f1 1294_S1_L008_R1_001.fastq.gz -fb 1294_S1_L008_R2_001.fastq.gz -rb 1294_S1_L008_R3_001.fastq.gz -f2 1294_S1_L008_R4_001.fastq.gz -op /scratch/bgmp/gmich/demux/ -q 0"
+	User time (seconds): 2485.59
+	System time (seconds): 18.73
+	Percent of CPU this job got: 82%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 50:41.35
 
+Counts of matched, hopped, and unknown for cutoff of 0 match other students'
+Counts for cutoff of 25 are shifted logically from the cutoff of 0 values (more unknown, fewer matched and hopped)
+	Not directly comparable to others due to using base-by-base cutoff
 
+Made summary markdown table of matched, unkown, hopped counts and percentages (Summary_table.md)
