@@ -97,3 +97,10 @@ Counts for cutoff of 25 are shifted logically from the cutoff of 0 values (more 
 
 Made summary markdown table of matched, unkown, hopped counts and percentages (Summary_table.md)
 Added figures
+
+Final additions:
+Renamed pie charts to "Demultiplex_bin_percents_cutoff={args.qcut}.tsv" and reformatted with title
+Renamed counts bar chart to "Demultiplex_counts_cutoff={args.qcut}.png"
+Added bar chart with percentage of reads named "Demultiplex_counts_cutoff={args.qcut}.png"
+
+Added percentage of reads and matched/unmatched conditions columns to tsv files
