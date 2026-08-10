@@ -43,6 +43,7 @@ def reverse_comp(sequence: str)-> str:
 # 	print("reverse_comp works")
 
 def read_record(fh: list)->list:
+	####not used in this script, for future use###
 	'''function for looping over a fastq file within a while True loop'''
 	record=[]
 	for i in range(4):
@@ -76,6 +77,7 @@ for barcode in barcodes:
 #will open an output file for each read file for all successful pairings, a hopped bin file, and unknown indices
 
 ### good to here###
+totalrecs=0
 with gzip.open(f'{args.inpath}{args.file1}',"rt") as fh1, gzip.open(f'{args.inpath}{args.fwd_bc}',"rt") as fbc, gzip.open(f'{args.inpath}{args.rev_bc}',"rt") as rbc, gzip.open(f'{args.inpath}{args.file2}',"rt") as fh2:
 	while True:
 		header1=fh1.readline().strip('\n')
@@ -107,7 +109,9 @@ with gzip.open(f'{args.inpath}{args.file1}',"rt") as fh1, gzip.open(f'{args.inpa
 				filedict["unknown"][0].write(f'{R1outheader}\n{seq1}\n{plus1}\n{qscore1}')
 				filedict["unknown"][1].write(f'{R2outheader}\n{seq2}\n{plus4}\n{qscore2}')
 				indexdict["unknown"]+=1
+				totalrecs+=1
 		else:
+			totalrecs+=1
 			written=False
 			for pos, base in enumerate(qscore_fbc):
 				if bioinfo.convert_phred(base)<args.qcut or bioinfo.convert_phred(qscore_fbc[pos])<args.qcut:
@@ -131,41 +135,52 @@ for barcode in filedict:
 	filedict[barcode][1].close()
 
 statsdict={"Hopped":0}
-hopped_count=0
 match_count=0
-unknown_count=0
 #will only have counts for matched index, hopped bin, and unknown bin
 with open(f'Demultiplex_stats_cutoff={args.qcut}.tsv', "w") as stats:
+	print(f'Index Pair\tPair Condition\tCount\tMatched Percent', file=stats)
 	for bcpair in indexdict:
-		print(f'{bcpair}\t{indexdict[bcpair]}', file=stats)
 		if bcpair=="unknown":
+			print(f'{bcpair}\tUnknown\t{indexdict[bcpair]}\t{100*indexdict[bcpair]/totalrecs}', file=stats)
 			statsdict["Unknown"]=indexdict["unknown"]
-			unknown_count=indexdict["unknown"]
 		else:
 			barcodes=bcpair.split("-")
 			if barcodes[0]==barcodes[1]:
 				match_count+=indexdict[bcpair]
 				statsdict[barcodes[0]]=indexdict[bcpair]
+				print(f'{bcpair}\tMatched\t{indexdict[bcpair]}\t{100*indexdict[bcpair]/totalrecs}', file=stats)
 			else:
 				statsdict["Hopped"]+=indexdict[bcpair]
-				hopped_count+=indexdict[bcpair]
-	print(f'Matched Reads\t{match_count}\nHopped Reads\t{hopped_count}\nUnknown Reads\t{unknown_count}', file=stats)
+				print(f'{bcpair}\tHopped\t{indexdict[bcpair]}\t{100*indexdict[bcpair]/totalrecs}', file=stats)
+	print(f'Matched Reads\t{match_count}\nHopped Reads\t{statsdict["Hopped"]}\nUnknown Reads\t{statsdict["Unknown"]}', file=stats)
 
-#pie chart of matched, hopped, and 
+#pie chart of matched, hopped, and unknown
 plt.figure(1)
+plt.title(f'Percentages by Condition with Cutoff of {args.qcut}')
 labels = 'Matched', 'Hopped', 'Unknown'
-sizes = [match_count, hopped_count,unknown_count]
+sizes = [match_count, statsdict["Hopped"],statsdict["Unknown"]]
 plt.pie(sizes, labels=labels, autopct='%1.1f%%')
-plt.savefig(f'Demultiplex_percents_cutoff={args.qcut}.png')
-plt.close(f'Demultiplex_percents_cutoff={args.qcut}.png')
+plt.savefig(f'Demultiplex_bin_percents_cutoff={args.qcut}.png')
+plt.close(f'Demultiplex_bin_percents_cutoff={args.qcut}.png')
 
-#bar chart of reads by matched pair, hopped, and unknown
+#bar chart of read counts by matched pair, hopped, and unknown
 plt.figure(2)
 plt.bar(list(statsdict.keys()),list(statsdict.values()))
-plt.title('Number of Reads by Index Pair')
+plt.title(f'Number of Reads by Index Pair with Cutoff of {args.qcut}')
 plt.xlabel('Matched Index')
 plt.ylabel('Count')
 plt.xticks(fontsize=12, rotation=45, ha='right')
 plt.tight_layout()
-plt.savefig(f'Demultiplex_stats_cutoff={args.qcut}.png')
-plt.close(f'Demultiplex_stats_cutoff={args.qcut}.png')
+plt.savefig(f'Demultiplex_counts_cutoff={args.qcut}.png')
+plt.close(f'Demultiplex_counts_cutoff={args.qcut}.png')
+
+#bar chart of read percentages by matched pair, hopped, and unknown
+plt.figure(3)
+plt.bar(list(statsdict.keys()),list(100*(value/totalrecs) for value in statsdict.values()))
+plt.title(f'Percent of Reads by Index Pair with Cutoff of {args.qcut}')
+plt.xlabel('Matched Index')
+plt.ylabel('Percent of Reads')
+plt.xticks(fontsize=12, rotation=45, ha='right')
+plt.tight_layout()
+plt.savefig(f'Demultiplex_percents_cutoff={args.qcut}.png')
+plt.close(f'Demultiplex_percents_cutoff={args.qcut}.png')
