@@ -104,3 +104,30 @@ Renamed counts bar chart to "Demultiplex_counts_cutoff={args.qcut}.png"
 Added bar chart with percentage of reads named "Demultiplex_counts_cutoff={args.qcut}.png"
 
 Added percentage of reads and matched/unmatched conditions columns to tsv files
+
+Slurm output for cutoff of 25:
+Command being timed: "./demultiplex.py -ip /projects/bgmp/shared/2017_sequencing/ -i indexes.txt -f1 1294_S1_L008_R1_001.fastq.gz -fb 1294_S1_L008_R2_001.fastq.gz -rb 1294_S1_L008_R3_001.fastq.gz -f2 1294_S1_L008_R4_001.fastq.gz -op /scratch/bgmp/gmich/demux/ -q 25"
+	User time (seconds): 2410.03
+	System time (seconds): 20.08
+	Percent of CPU this job got: 74%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 54:35.99
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 298968
+
+Slurm output for cutoff of 0:
+Command being timed: "./demultiplex.py -ip /projects/bgmp/shared/2017_sequencing/ -i indexes.txt -f1 1294_S1_L008_R1_001.fastq.gz -fb 1294_S1_L008_R2_001.fastq.gz -rb 1294_S1_L008_R3_001.fastq.gz -f2 1294_S1_L008_R4_001.fastq.gz -op /scratch/bgmp/gmich/demux/ -q 0"
+	User time (seconds): 2429.33
+	System time (seconds): 18.93
+	Percent of CPU this job got: 78%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 52:02.50
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 301576
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 17288
